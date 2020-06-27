@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react"
 import { Form } from "react-final-form"
 import styled from "styled-components"
 import { useStore } from "effector-react"
-import { TextField, Select } from "mui-rff"
+import { Select } from "mui-rff"
 import { MenuItem, Checkbox, ListItemText, Button } from "@material-ui/core"
 import { useOutsideAlerter } from "../utils/click-outside"
 import { AnyObject } from "final-form"
 import { setParams, resetParams } from "../model/params-search"
 import { $selectExelData } from "../model/select-metrics"
+import { InputNumber } from "../atoms/input-number"
+import { InputSelect } from "../atoms/input-select"
 
 const onSubmit = async (values: AnyObject) => {
   setParams(values)
@@ -36,46 +38,17 @@ export const FormSearch = () => {
             <WrapperMetrics>
               {groupExel.map((x, i) => (
                 <WrapperItem key={i}>
-                  {x.type === "number" && (
-                    <>
-                      <TextField label={x.name} name={x.name} type="number" />
-                      <RangeTitle onClick={() => setActive(x.name)}>
-                        Диапозон
-                      </RangeTitle>
-
-                      <WrapperRange
-                        show={active === x.name}
-                        ref={active === x.name ? range : null}
-                      >
-                        <Title>Диапозон</Title>
-                        <TextField
-                          label={"+"}
-                          name={`${x.name}UpRange`}
-                          type="number"
-                        />
-                        <TextField
-                          label={"-"}
-                          name={`${x.name}DownRange`}
-                          type="number"
-                        />
-                      </WrapperRange>
-                    </>
-                  )}
-                  {x.type === "string" && (
-                    <Select
+                  {x.type === "number" ? (
+                    <InputNumber
+                      range={range}
                       name={x.name}
-                      label={x.name}
-                      multiple
-                      renderValue={(selected: any) => selected.join(", ")}
-                    >
-                      {x?.data?.map((q, i) => (
-                        <MenuItem key={i} value={q}>
-                          <Checkbox checked={values[x.name]?.indexOf(q) > -1} />
-                          <ListItemText primary={q} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  )}
+                      active={active}
+                      setActive={setActive}
+                    />
+                  ) : null}
+                  {x.type === "string" ? (
+                    <InputSelect name={x.name} values={values} data={x} />
+                  ) : null}
                 </WrapperItem>
               ))}
             </WrapperMetrics>
@@ -110,30 +83,6 @@ export const FormSearch = () => {
   )
 }
 
-const WrapperRange = styled.div<{ show: boolean }>`
-  margin-bottom: 50px;
-  position: absolute;
-  padding: 10px;
-  background: white;
-  border-radius: 5px;
-  z-index: 10;
-  top: -15px;
-  left: 0;
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-
-  & > div {
-    margin-bottom: 5px;
-  }
-
-  display: none;
-  ${({ show }) => show && "display: block;"}
-`
-
-const Title = styled.div`
-  font-size: 12px;
-`
-
 const WrapperBtn = styled.div`
   display: flex;
 `
@@ -152,12 +101,4 @@ const WrapperMetrics = styled.div`
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-`
-
-const RangeTitle = styled.div`
-  font-size: 12px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
 `
