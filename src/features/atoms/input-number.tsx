@@ -12,7 +12,7 @@ export const InputNumber: React.FC<{
   return (
     <>
       <TextField label={name} name={name} type="number" />
-      <RangeTitle onClick={() => setActive(name)}>Диапозон</RangeTitle>
+      <RangeTitle onClick={() => setActive(name)}>Диапазон</RangeTitle>
 
       <WrapperRange show={active === name} ref={active === name ? range : null}>
         <Title>Диапозон</Title>
@@ -53,4 +53,7 @@ const RangeTitle = styled.div`
   right: 0;
   top: 0;
   cursor: pointer;
+  padding: 4px;
+  background: #f0efef;
+  border-radius: 5px;
 `
