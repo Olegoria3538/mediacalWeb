@@ -1,15 +1,35 @@
-import { createStore, createEvent, combine } from "effector"
-import { AnyObject } from "../type"
+import { createStore, createEvent, combine, guard } from "effector"
+
+type AnyDataExel = { [key: string]: React.ReactText }
 
 const $dataExel = createStore<{
   complete: boolean
-  data: { [key: string]: React.ReactText }[]
+  data: AnyDataExel[]
 }>({
   complete: false,
   data: [],
 })
-const setDataExel = createEvent<AnyObject[]>()
-$dataExel.on(setDataExel, (_, data) => ({ complete: !!data.length, data }))
+
+const setDataExel = createEvent<AnyDataExel[]>()
+const setDataExelGuard = createEvent<AnyDataExel[]>()
+guard({
+  source: setDataExel,
+  filter: (data) => {
+    if (!data?.length) {
+      alert("Документ пуст")
+      return false
+    }
+    const colName = Object.keys(data[0] || {})
+    if (colName.includes("__EMPTY")) {
+      alert("Должны быть заполнены все заголовки колонок")
+      return false
+    }
+    return !!data
+  },
+  target: setDataExelGuard,
+})
+
+$dataExel.on(setDataExelGuard, (_, data) => ({ complete: !!data.length, data }))
 
 const $colName = $dataExel.map(({ data }) => Object.keys(data[0] || {}))
 

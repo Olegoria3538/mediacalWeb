@@ -1,3 +1,5 @@
+import { ReactText } from "react"
+
 export type AnyObject = { [key: string]: any }
 
 export interface ParamsType {

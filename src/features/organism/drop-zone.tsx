@@ -28,6 +28,20 @@ export const DropZone = () => {
           })
         }
       }
+
+      console.log(file)
+
+      const types = [
+        ".csv",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+      ]
+
+      if (!types.includes(file?.type)) {
+        alert("Не верный формат файла")
+        return
+      }
+
       reader.readAsBinaryString(file)
     })
   }, [])
