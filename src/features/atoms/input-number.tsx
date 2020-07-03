@@ -53,7 +53,8 @@ const RangeTitle = styled.div`
   right: 0;
   top: 0;
   cursor: pointer;
-  padding: 4px;
-  background: #f0efef;
-  border-radius: 5px;
+  padding: 5px;
+  background: #303f9f;
+  border-radius: 3px;
+  color: white;
 `
