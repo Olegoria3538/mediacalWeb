@@ -17,7 +17,7 @@ import { $colName } from "../model/data-exel"
 
 export const TableBuild = () => {
   const colName = useStore($colName)
-  const valueExel = useStore($tableDataValue)
+  const tableData = useStore($tableDataValue)
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [sortMetric, setSortMetric] = useState<{
@@ -26,7 +26,7 @@ export const TableBuild = () => {
   }>({ name: "", direction: "asc" })
 
   const sliceResult = useMemo(() => {
-    if (valueExel.length) {
+    if (tableData.length) {
       const sortIndex = findIndex((x) => x === sortMetric.name)(colName)
       const res = (array: React.ReactText[][]) =>
         rowsPerPage === -1
@@ -34,13 +34,13 @@ export const TableBuild = () => {
           : chunk<React.ReactText[]>(rowsPerPage)(array)[page]
       if (sortIndex !== -1) {
         const sortFunc = sortTable(sortMetric.direction, sortIndex)
-        return compose(res, sortFunc)(valueExel)
+        return compose(res, sortFunc)(tableData)
       }
-      return res(valueExel)
+      return res(tableData)
     } else {
       return []
     }
-  }, [page, valueExel, rowsPerPage, colName, sortMetric])
+  }, [page, tableData, rowsPerPage, colName, sortMetric])
 
   const clickSort = (name: string) => {
     if (sortMetric.name === name) {
@@ -91,7 +91,7 @@ export const TableBuild = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, { label: "Все", value: -1 }]}
           component="div"
-          count={valueExel.length}
+          count={tableData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={(_, p) => setPage(p)}

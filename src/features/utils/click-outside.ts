@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-export function useOutsideAlerter({
+export function useOutsideClick({
   ref,
   callBack,
 }: {
