@@ -20,6 +20,7 @@ export const TableBuild = () => {
   const tableData = useStore($tableDataValue)
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+
   const [sortMetric, setSortMetric] = useState<{
     name: string
     direction: "asc" | "desc"
@@ -81,7 +82,9 @@ export const TableBuild = () => {
               {sliceResult.map((x, i) => (
                 <TableRow key={i}>
                   {x.map((x, i) => (
-                    <TableCell key={i}>{x}</TableCell>
+                    <TableCell key={i}>
+                      <Cell>{x}</Cell>
+                    </TableCell>
                   ))}
                 </TableRow>
               ))}
@@ -92,17 +95,25 @@ export const TableBuild = () => {
           rowsPerPageOptions={[5, 10, 25, { label: "Все", value: -1 }]}
           component="div"
           count={tableData.length}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={Math.abs(rowsPerPage)}
           page={page}
           onChangePage={(_, p) => setPage(p)}
-          onChangeRowsPerPage={(e) =>
-            setRowsPerPage(parseInt(e.target.value, 10))
-          }
+          onChangeRowsPerPage={(e) => {
+            const page = Number(e.target.value)
+            setRowsPerPage(page)
+            setPage(0)
+          }}
         />
       </Paper>
     </Wrapper>
   )
 }
+
+const Cell = styled.div`
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+`
 
 const Wrapper = styled.div`
   .MuiTableCell-sizeSmall {
