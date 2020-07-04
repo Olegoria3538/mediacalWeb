@@ -29,7 +29,6 @@ export const DropZone = () => {
         }
       }
 
-      console.log(file)
 
       const types = [
         ".csv",
