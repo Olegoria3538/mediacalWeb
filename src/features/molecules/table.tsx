@@ -18,9 +18,9 @@ import { $colName } from "../model/data-exel"
 export const TableBuild = () => {
   const colName = useStore($colName)
   const tableData = useStore($tableDataValue)
+  
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
-
   const [sortMetric, setSortMetric] = useState<{
     name: string
     direction: "asc" | "desc"
