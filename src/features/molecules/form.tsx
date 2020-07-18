@@ -108,6 +108,15 @@ const WrapperItem = styled.div`
 
 const Wrapper = styled.div`
   margin-bottom: 50px;
+  .MuiFormHelperText-root.Mui-error {
+    display: none;
+  }
+  .MuiFormLabel-root.Mui-error {
+    color: #303f9f;
+  }
+  .MuiInput-underline.Mui-error:after {
+    border-bottom-color: #303f9f;
+  }
 `
 
 const WrapperMetrics = styled.div`
