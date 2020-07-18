@@ -38,7 +38,13 @@ const ContentForm: React.FC<{ data: FormRenderProps<AnyObject> }> = ({
   const [lengthMetric, setLengthMetric] = useState<number>(groupExel.length)
 
   useEffect(() => {
-    if (groupExel.length < lengthMetric) setParams(form.getState())
+    if (groupExel.length < lengthMetric) {
+      const names = groupExel.map((x) => x.name)
+      Object.keys(form.getState().values).forEach((x) => {
+        if (!names.includes(x)) form.change(x, undefined)
+      })
+      setParams(form.getState().values)
+    }
     setLengthMetric(groupExel.length)
   }, [groupExel.length])
 
