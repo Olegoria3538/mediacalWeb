@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { TextField } from "mui-rff"
-import { AnyObject } from "final-form"
 
 export const InputNumber: React.FC<{
   name: string
@@ -13,7 +12,6 @@ export const InputNumber: React.FC<{
     <>
       <TextField label={name} name={name} type="number" />
       <RangeTitle onClick={() => setActive(name)}>Диапазон</RangeTitle>
-
       <WrapperRange show={active === name} ref={active === name ? range : null}>
         <Title>Диапозон</Title>
         <TextField label={"+"} name={`${name}UpRange`} type="number" />
